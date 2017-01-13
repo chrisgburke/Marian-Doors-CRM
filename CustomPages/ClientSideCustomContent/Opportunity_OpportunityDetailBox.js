@@ -43,15 +43,16 @@ $(document).ready(function(){
                 });   
 
                 //then redirect to OppoLinkNew.asp
-                
-                alert("now we redirect");
-
+                RedirectToOppoLinkNew(oppoID);            
             }
-
-
         }
     }
 });
+
+function RedirectToOppoLinkNew(oppoID){
+    var redirectUrl = increaseCrmLib.MakeRequestString("OppoLink/OppoLinkNew", "OppoID=" + oppoID);
+    document.location.href= redirectUrl;
+}
 
 function SaveAndLink(orig) {
 

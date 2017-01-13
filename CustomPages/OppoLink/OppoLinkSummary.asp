@@ -72,7 +72,10 @@ if (UseId != 0) {
      }
      else
      {
-       Container.DisplayButton(Button_Continue) = true;
+       //Container.DisplayButton(Button_Continue) = true;
+       Container.AddButton(
+          CRM.Button("Continue", "continue.gif", 
+              CRM.Url("260")));
        Container.AddButton(CRM.Button("Change","edit.gif","javascript:x=location.href;if (x.charAt(x.length-1)!='&')if (x.indexOf('?')>=0) x+='&'; else x+='?';x+='Opli_OppoLinkID="+UseId+"&History=T';document.EntryForm.action=x;document.EntryForm.submit();", "OppoLink", "EDIT"));
      }
 

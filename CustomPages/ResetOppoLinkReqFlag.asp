@@ -11,7 +11,7 @@ if(DebugOn())
 try {
     var oppoID = Request.QueryString("OppoID");
     if(HasValue(oppoID)){
-        var updateString = "UPDATE Opportunity SET oppo_linkreqflag = '' WHERE oppo_opportunityid=" + oppoID + "";
+        var updateString = "UPDATE Opportunity SET oppo_linkreqflag = NULL WHERE oppo_opportunityid=" + oppoID + "";
         CRM.ExecSql(updateString);
 
     }

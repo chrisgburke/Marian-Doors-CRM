@@ -1,6 +1,8 @@
 <!-- #include file ="..\crmwizard.js" -->
 <!-- #include file ="..\crmconst.js" -->
 <!-- #include file ="..\increaseCrmDebug.js" -->
+<!-- #include file ="..\IncreaseCrmCommonServerFunctions.js" -->
+
 <%
 if(DebugOn())
 {
@@ -117,6 +119,11 @@ else if( context == iKey_AccountId && false )
   }
 }
 
+var oppoID = Request.QueryString("OppoID");
+if(HasValue(oppoID)){
+    Entry = EntryGroup.GetEntry("Opli_OpportunityId");
+    Entry.DefaultValue = oppoID;
+}
 
 names = Request.QueryString("fieldname");
 if( Defined(names) )
@@ -142,7 +149,7 @@ if(false){
 } else {
 	container.AddButton(
    CRM.Button("Cancel", "cancel.gif", 
-      CRM.Url("521")));
+      CRM.Url("260")));
 }
 
 if( true )

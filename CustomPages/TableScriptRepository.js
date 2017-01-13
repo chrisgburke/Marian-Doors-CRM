@@ -36,8 +36,8 @@ function writeToFile(message) {
 //*************************
 function QuoteItems_TaxCalculation_InsertRecord() {
     try {
-        CalculateTax();
-        CalculateGrossValue();
+        //CalculateTax();
+        //CalculateGrossValue();
     } catch (error) {
         writeToFile("ERROR: " + error.message);
     }
@@ -53,8 +53,8 @@ function QuoteItems_TaxCalculation_PostInsertRecord() {
 
 function QuoteItems_TaxCalculation_UpdateRecord() {
     try {
-        CalculateTax();
-        CalculateGrossValue();
+       // CalculateTax();
+       // CalculateGrossValue();
     } catch (error) {
         writeToFile("ERROR: " + error.message);
     }
@@ -138,13 +138,4 @@ function UpdateName(){
     var nameField = 'Edit';
     Values('OpLi_Name') = nameField;
 }
-
-//*********************************************************************************************/
-
-
-
-
-
-
-
 
