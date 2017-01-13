@@ -1,7 +1,11 @@
 <!-- #include file ="..\crmwizard.js" -->
 <!-- #include file ="..\crmconst.js" -->
-
+<!-- #include file ="..\increaseCrmDebug.js" -->
 <%
+if(DebugOn())
+{
+	debugger;
+}
 
 var Now=new Date();
 if (CRM.Mode<Edit) CRM.Mode=Edit;
