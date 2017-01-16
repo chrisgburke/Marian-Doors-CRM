@@ -50,7 +50,7 @@ $(document).ready(function(){
 });
 
 function RedirectToOppoLinkNew(oppoID){
-    var redirectUrl = increaseCrmLib.MakeRequestString("OppoLink/OppoLinkNew", "OppoID=" + oppoID);
+    var redirectUrl = increaseCrmLib.MakeRequestString("OppoLink/OppoLinkNew", "OppoID=" + oppoID + "&DO_LINK=Y");
     document.location.href= redirectUrl;
 }
 

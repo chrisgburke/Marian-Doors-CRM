@@ -1,6 +1,12 @@
 <!-- #include file ="..\crmwizard.js" -->
+<!-- #include file ="..\increaseCrmDebug.js" -->
+<!-- #include file ="..\IncreaseCrmCommonServerFunctions.js" -->
 
 <%
+if(DebugOn())
+{
+	debugger;
+}
 
 if( CRM.Mode != Save ){
   F=Request.QueryString("F");
@@ -22,6 +28,8 @@ if (Id.toString() == 'undefined') {
   }
 }
 
+var oppoID = "";
+
 var UseId = 0;
 
 if (Id.indexOf(',') > 0) {
@@ -39,6 +47,7 @@ if (UseId != 0) {
    CRM.SetContext("OppoLink", UseId);
 
    record = CRM.FindRecord("OppoLink", "Opli_OppoLinkID="+UseId);
+   oppoID = record.opli_opportunityid;
 
    //if were deleting
    if( Request.Querystring("em") == 3 )
@@ -72,10 +81,15 @@ if (UseId != 0) {
      }
      else
      {
-       //Container.DisplayButton(Button_Continue) = true;
+       //if we are in the 'doing links' mode then we will addd a 'Add another' button....
+       var doLink = Request.Querystring("DO_LINK");
+       if(HasValue(doLink)){
+         Container.AddButton(CRM.Button("Add another..", "new.gif", CRM.URL("OppoLink/OppoLinkNew.asp?OppoID=" + oppoID + "&DO_LINK=Y")));
+       }
+       var continueUrl = CRM.Url("260");
+       continueUrl += "&Key7=" + oppoID;
        Container.AddButton(
-          CRM.Button("Continue", "continue.gif", 
-              CRM.Url("260")));
+          CRM.Button("Continue", "continue.gif", continueUrl));
        Container.AddButton(CRM.Button("Change","edit.gif","javascript:x=location.href;if (x.charAt(x.length-1)!='&')if (x.indexOf('?')>=0) x+='&'; else x+='?';x+='Opli_OppoLinkID="+UseId+"&History=T';document.EntryForm.action=x;document.EntryForm.submit();", "OppoLink", "EDIT"));
      }
 

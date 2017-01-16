@@ -10,6 +10,8 @@ if(DebugOn())
 }
 
 var Now=new Date();
+
+
 if (CRM.Mode<Edit) CRM.Mode=Edit;
 
 record=CRM.CreateRecord("OppoLink");
@@ -147,9 +149,10 @@ if(false){
    CRM.Button("Cancel", "cancel.gif", 
       "OppoLinkDedupe.asp?J=OppoLink/OppoLinkDedupe.asp&F=OppoLink/OppoLinkNew.asp&E=OppoLinkT=new&T=new"+Request.QueryString));
 } else {
-	container.AddButton(
-   CRM.Button("Cancel", "cancel.gif", 
-      CRM.Url("260")));
+	var continueUrl = CRM.Url("260");
+  continueUrl += "&Key7=" + oppoID;
+  container.AddButton(
+          CRM.Button("Continue", "continue.gif", continueUrl));
 }
 
 if( true )
