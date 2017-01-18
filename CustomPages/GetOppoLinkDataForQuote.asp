@@ -18,13 +18,17 @@ if(HasValue(quoteID)){
 	while(!smallQuoteQuery.eof){
 		var opportunityid = smallQuoteQuery("quot_opportunityid");
 		if(HasValue(opportunityid)){
-			var getOppoLinksQueryStr = "select OppoLink.Opli_OppoLinkID, Company.Comp_Name from OppoLink inner join Company on OppoLink.opli_Company = Company.Comp_CompanyId";
+			var getOppoLinksQueryStr = "select OppoLink.Opli_OppoLinkID, Company.Comp_Name, Person.Pers_FirstName, Person.Pers_LastName from OppoLink ";
+			getOppoLinksQueryStr += "inner join Company on OppoLink.opli_Company = Company.Comp_CompanyId ";
+			getOppoLinksQueryStr += "left outer join Person on OppoLink.opli_Person = Person.Pers_PersonId ";
 			getOppoLinksQueryStr += " where OppoLink.Opli_OpportunityId = " + opportunityid;
 			var oppoLinkQuery = CRM.CreateQueryObj(getOppoLinksQueryStr);
 			oppoLinkQuery.SelectSql();
 			while(!oppoLinkQuery.eof){
 
-				var optionString = "<option value=" + oppoLinkQuery("Opli_OppoLinkID")	+ ">" + oppoLinkQuery("Comp_name") + "</option>";
+				var optionString = "<option value=" + oppoLinkQuery("Opli_OppoLinkID")	+ ">" + oppoLinkQuery("Comp_name");
+				optionString += " (" + oppoLinkQuery("Pers_FirstName") + " " + oppoLinkQuery("Pers_LastName") + ") ";	
+				optionString += "</option>";
 				optionsArray.push(optionString);
 				oppoLinkQuery.NextRecord();
 			}
