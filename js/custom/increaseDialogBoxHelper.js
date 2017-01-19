@@ -34,7 +34,6 @@ increaseDialogBoxHelper = {
 	
 	fnOpenSelectDialog : function (innerHtml, title, okFunc, cancelFunc) {
 		$("#select_hook").html(innerHtml);
-		//$("#select_hook_select").selectmenu({ width: 300 });
 		$("#select_hook").dialog({
             resizable: false,
             modal: true,

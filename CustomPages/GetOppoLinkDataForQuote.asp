@@ -40,7 +40,7 @@ if(HasValue(quoteID)){
 
 if(optionsArray.length > 0)
 {
-	var responseHTML = "<form><fieldset><select name='select_hook_select' id='select_hook_select' class='EDIT'>";
+	var responseHTML = "<div><select name='select_hook_select' id='select_hook_select' width='100%'>";
 		for(i=0;i<optionsArray.length;i++){
 			responseHTML += optionsArray[i];
 		}
@@ -48,7 +48,7 @@ if(optionsArray.length > 0)
 	//responseHTML += "<option value=2>Jegsy Dodd Ltd</option>";
 	//responseHTML += "<option value=3>Chocolate Watch Band Ltd</option>";
 	//responseHTML += "<option value=4>Barry The Cat</option>";
-	//responseHTML += "</select></fieldset></form>";
+	//responseHTML += "</select></div>";
 	Response.Write(responseHTML);
 }
 %>

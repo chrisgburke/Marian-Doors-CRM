@@ -1,9 +1,16 @@
 $(document).ready(function () {
     //alert('ok');
+    var server = crm.installUrl().split('/')[3];
+    
     increaseCrmLib.ReplaceSaveButtonClickMethod("Button_QuickSendQuote", "QuickSendOverride");
     increaseCrmLib.ReplaceSaveButtonClickMethod("Button_QuickPrintQuote", "QuickPrintOverride");
     increaseDialogBoxHelper.addSelectHook("RightButtonPanel");
 });
+
+function loadCustomCss(href) {
+    var cssLink = $("<link rel='stylesheet' type='text/css' href='" + href + "'>");
+	$("head").append(cssLink);		
+}
 
 function DoMergeOverride(afterOKFunc) {
 
