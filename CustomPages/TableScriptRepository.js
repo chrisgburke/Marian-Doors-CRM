@@ -105,7 +105,6 @@ function CalculateGrossValue(qpTotal) {
 function OppoLink_UpdateNameField_InsertRecord(){
    try {
        UpdateName();
-       
    } catch (error) {
        writeToFile("ERROR: " + error.message);
    }
@@ -113,6 +112,7 @@ function OppoLink_UpdateNameField_InsertRecord(){
 
 function OppoLink_UpdateNameField_PostInsertRecord(){
    try {
+        
    } catch (error) {
        writeToFile("ERROR: " + error.message);
    }
@@ -136,9 +136,22 @@ function OppoLink_UpdateNameField_DeleteRecord(){
 
 function UpdateName(){
     writeToFile("IN UPDATENAME METHOD");
-   //var oppoLinkRecord = CRM.FindRecord("Oppo")
+    var oppoID = Values('OpLi_OpportunityId');
+    var compID = Values("OpLi_company");
+    
+    var opportunityRecord = CRM.FindRecord("Opportunity", "oppo_opportunityid=" + oppoID);
+    var companyRecord = CRM.FindRecord("Company", "comp_companyid="+compID);
+    
+    var oppoDetails = new String(opportunityRecord.oppo_description);
+    if(oppoDetails.length > 14){
+        oppoDetails = oppoDetails.substring(0, 14);
+    }
+    var compDetails = new String(companyRecord.comp_name);
+    if(compDetails.length > 13){
+        compDetails = compDetails.substring(0, 13);
+    }
     var nameField = 'Edit';
-    Values('OpLi_Name') = nameField;
+    Values('OpLi_Name') = oppoDetails +" / " + compDetails;//nameField;
 }
 
 //*************************
