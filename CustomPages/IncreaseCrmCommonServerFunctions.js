@@ -22,4 +22,18 @@ function HasValue(inputVal) {
 		return false;
 	}
 }
+
+function CleanQueryStringValue(key){
+	var thing = new String(Request.Querystring(key));
+    if(HasValue(thing)) {
+
+		if (thing.indexOf(',') > 0) {
+			var Idarr = thing.split(",");
+			return Idarr[0];
+		}else{
+			return thing;
+		}
+	}
+	return thing;
+}
 %>

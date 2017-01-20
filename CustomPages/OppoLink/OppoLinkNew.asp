@@ -28,7 +28,7 @@ if(!Defined(context) )
   context=Request.QueryString("Key0");
 
 if( !false )
-  CRM.SetContext("New");
+  //CRM.SetContext("New");
 
 if( context == iKey_CompanyId && false )
 {
@@ -121,7 +121,10 @@ else if( context == iKey_AccountId && false )
   }
 }
 
-var oppoID = Request.QueryString("OppoID");
+var oppoID = CleanQueryStringValue("OppoID");
+if(!HasValue(oppoID)){
+  oppoID = CleanQueryStringValue("Key7");
+}
 if(HasValue(oppoID)){
     Entry = EntryGroup.GetEntry("Opli_OpportunityId");
     Entry.DefaultValue = oppoID;
@@ -149,10 +152,20 @@ if(false){
    CRM.Button("Cancel", "cancel.gif", 
       "OppoLinkDedupe.asp?J=OppoLink/OppoLinkDedupe.asp&F=OppoLink/OppoLinkNew.asp&E=OppoLinkT=new&T=new"+Request.QueryString));
 } else {
-	var continueUrl = CRM.Url("260");
-  continueUrl += "&Key7=" + oppoID;
+  var doLink = Request.Querystring("DO_LINK");
+  var buttonCaption = "Cancel";
+  if(HasValue(doLink)){
+    buttonCaption = "Continue";
+  }
+  var continueUrl = "";
+  if(HasValue(oppoID)) {
+	  continueUrl = CRM.Url("260");
+    continueUrl += "&Key7=" + oppoID;
+  }else{
+    continueUrl = CRM.Url("OppoLink/OppLinkFind.asp");
+  }
   container.AddButton(
-          CRM.Button("Continue", "continue.gif", continueUrl));
+          CRM.Button(buttonCaption, "continue.gif", continueUrl));
 }
 
 if( true )

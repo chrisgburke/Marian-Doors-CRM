@@ -105,6 +105,7 @@ function CalculateGrossValue(qpTotal) {
 function OppoLink_UpdateNameField_InsertRecord(){
    try {
        UpdateName();
+       
    } catch (error) {
        writeToFile("ERROR: " + error.message);
    }
@@ -112,7 +113,6 @@ function OppoLink_UpdateNameField_InsertRecord(){
 
 function OppoLink_UpdateNameField_PostInsertRecord(){
    try {
-
    } catch (error) {
        writeToFile("ERROR: " + error.message);
    }
@@ -135,7 +135,71 @@ function OppoLink_UpdateNameField_DeleteRecord(){
 }
 
 function UpdateName(){
+    writeToFile("IN UPDATENAME METHOD");
+   //var oppoLinkRecord = CRM.FindRecord("Oppo")
     var nameField = 'Edit';
     Values('OpLi_Name') = nameField;
 }
+
+//*************************
+// Entity : Opportunity 
+// Script : CleanForeignIDs 
+//*************************
+function Opportunity_CleanForeignIDs_InsertRecord(){
+   try {
+
+   } catch (error) {
+       writeToFile("ERROR: " + error.message);
+   }
+}
+
+function Opportunity_CleanForeignIDs_PostInsertRecord(){
+   try {
+       CleanForeignIds(WhereClause);
+   } catch (error) {
+       writeToFile("ERROR: " + error.message);
+   }
+}
+
+function Opportunity_CleanForeignIDs_UpdateRecord(){
+   try {
+
+   } catch (error) {
+       writeToFile("ERROR: " + error.message);
+   }
+}
+
+function Opportunity_CleanForeignIDs_DeleteRecord(){
+   try {
+
+   } catch (error) {
+       writeToFile("ERROR: " + error.message);
+   }
+}
+
+function CleanForeignIds(whereClause){
+
+    var updateString = "UPDATE Opportunity SET Oppo_PrimaryCompanyId = NULL, Oppo_PrimaryPersonId = NULL where ";
+    updateString += whereClause; 
+    writeToFile(updateString);
+    CRM.ExecSql(updateString);
+}
+
+// *** COPY THIS INTO CRM METADATA ***
+// function InsertRecord() {
+// Opportunity_CleanForeignIDs_InsertRecord();
+// }
+
+// function PostInsertRecord(){
+// Opportunity_CleanForeignIDs_PostInsertRecord();
+// }
+
+// function UpdateRecord() {
+// Opportunity_CleanForeignIDs_UpdateRecord();
+// }
+
+// function DeleteRecord(){
+// Opportunity_CleanForeignIDs_DeleteRecord();
+// }
+
 
