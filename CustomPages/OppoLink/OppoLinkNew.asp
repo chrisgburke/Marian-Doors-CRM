@@ -8,7 +8,7 @@ if(DebugOn())
 {
 	debugger;
 }
-
+CRM.AddContent("<script src='OppoLinkNew.js'></script>");
 var Now=new Date();
 
 
