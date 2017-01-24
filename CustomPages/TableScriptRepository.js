@@ -152,6 +152,7 @@ function UpdateName(){
     }
     var nameField = 'Edit';
     Values('OpLi_Name') = oppoDetails +" / " + compDetails;//nameField;
+    Values('OpLi_EditField') = 'Edit';
 }
 
 //*************************
