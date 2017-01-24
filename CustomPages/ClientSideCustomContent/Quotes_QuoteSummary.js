@@ -3,6 +3,8 @@ $(document).ready(function () {
     var server = crm.installUrl().split('/')[3];
     
     increaseCrmLib.ReplaceSaveButtonClickMethod("Button_QuickSendQuote", "QuickSendOverride");
+    increaseCrmLib.ReplaceSaveButtonClickMethod("Button_MergeToWord", "QuickSendOverride");
+    increaseCrmLib.ReplaceSaveButtonClickMethod("Button_MergeToPDF", "QuickSendOverride");
     increaseCrmLib.ReplaceSaveButtonClickMethod("Button_QuickPrintQuote", "QuickPrintOverride");
     increaseDialogBoxHelper.addSelectHook("RightButtonPanel");
 });
