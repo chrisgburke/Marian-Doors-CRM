@@ -1,10 +1,23 @@
 $(document).ready(function () {
-    //alert('ok');
-    var server = crm.installUrl().split('/')[3];
     
+    // var server = crm.installUrl().split('/')[3];
+    var currentHref = document.location.href;
+    if(currentHref.indexOf("Act=520") == -1) {
+        var key86 = crm.getArg("Key86");
+        var newUrl = crm.url(520);
+        var urlArr = newUrl.split("&Mode=")
+        newUrl =  urlArr[0] + "&Mode=1&CLk=T&ErgTheme=0&RecentValue=1469X86X" + key86;
+        
+        document.location.href= newUrl;
+    }
+    // var act = crm.getArg("Act");
+    // if(act != "520"){
+        
+    // }
+
     increaseCrmLib.ReplaceSaveButtonClickMethod("Button_QuickSendQuote", "QuickSendOverride");
-    increaseCrmLib.ReplaceSaveButtonClickMethod("Button_MergeToWord", "QuickSendOverride");
-    increaseCrmLib.ReplaceSaveButtonClickMethod("Button_MergeToPDF", "QuickSendOverride");
+    increaseCrmLib.ReplaceSaveButtonClickMethod("Button_MergeToWord", "QuickMergeOverride");
+    increaseCrmLib.ReplaceSaveButtonClickMethod("Button_MergeToPDF", "QuickMergeOverride");
     increaseCrmLib.ReplaceSaveButtonClickMethod("Button_QuickPrintQuote", "QuickPrintOverride");
     increaseDialogBoxHelper.addSelectHook("RightButtonPanel");
 });
@@ -14,8 +27,9 @@ function loadCustomCss(href) {
 	$("head").append(cssLink);		
 }
 
-function DoMergeOverride(afterOKFunc) {
+function DoMergeOverride(afterOKFunc, doFullUpdate) {
 
+    var updateFlag = doFullUpdate? "Y" : "N";
     var quoteID = crm.getArg("Key86");
     if (!quoteID) {
         quoteID = crm.getArg("Quot_OrderQuoteID");
@@ -38,11 +52,14 @@ function DoMergeOverride(afterOKFunc) {
                     //fire this off to set quot_mergeoppolinkid in the selected quote:
                     var urlObj = {};
                     urlObj.Target = "SetMergeOppoLinkInQuote.asp"
-                    urlObj.Params = [{ 'arg': 'QuoteID', 'val': quoteID }, { 'arg': 'OppoLinkID', 'val': oppoLinkID }];
+                    urlObj.Params = [{ 'arg': 'QuoteID', 'val': quoteID }, { 'arg': 'OppoLinkID', 'val': oppoLinkID }, { 'arg': 'FullUpdate', 'val' : updateFlag}];
                     var url = increaseCrmLib.MakeAjaxUrl(urlObj);
                     var returnValue = increaseCrmLib.MakeSimpleAjaxRequest(url)
                     if (returnValue === "TRUE") {
                         afterOKFunc();
+                    } else if (returnValue.startsWith("Key2")) {
+                         afterOKFunc(returnValue);
+                    
                     } else {
                         SageCRM.utilities.removeOverlay();
                     }
@@ -60,7 +77,7 @@ function QuickPrintOverride(orig) {
     try {
         DoMergeOverride(function () {
             window.open(orig, "_blank");
-        });
+        }, false);
     } catch (e) {
         SageCRM.utilities.removeOverlay();
     }
@@ -68,14 +85,23 @@ function QuickPrintOverride(orig) {
 
 function QuickSendOverride(orig) {
     try {
-        DoMergeOverride(function () {
-            document.location.href = orig;
-        });
+        DoMergeOverride(function (extraKey) {
+            document.location.href = orig + "&" + extraKey;
+        }, true);
     } catch (e) {
         SageCRM.utilities.removeOverlay();
     }
 }
 
+function QuickMergeOverride(orig) {
+    try {
+        DoMergeOverride(function () {
+            document.location.href = orig;
+        }, false);
+    } catch (e) {
+        SageCRM.utilities.removeOverlay();
+    }
+}
 /*
 function QuickSendOverrideOLD(orig) {
 
