@@ -1,18 +1,20 @@
 $(document).ready(function () {
-    
+
     // var server = crm.installUrl().split('/')[3];
-    var currentHref = document.location.href;
-    if(currentHref.indexOf("Act=520") == -1) {
-        var key86 = crm.getArg("Key86");
-        var newUrl = crm.url(520);
-        var urlArr = newUrl.split("&Mode=")
-        newUrl =  urlArr[0] + "&Mode=1&CLk=T&ErgTheme=0&RecentValue=1469X86X" + key86;
-        
-        document.location.href= newUrl;
-    }
+    // var currentHref = document.location.href;
+    // if (currentHref.indexOf("Act=520") == -1 && currentHref.indexOf("Act=1469") != -1) {
+    //     if (!$("quit_productfamilyidSPAN").length) {
+    //         var key86 = crm.getArg("Key86");
+    //         var newUrl = crm.url(520);
+    //         var urlArr = newUrl.split("&Mode=")
+    //         newUrl = urlArr[0] + "&Mode=1&CLk=T&ErgTheme=0&RecentValue=1469X86X" + key86;
+
+    //         //document.location.href = newUrl;
+    //     }
+    // }
     // var act = crm.getArg("Act");
     // if(act != "520"){
-        
+
     // }
 
     increaseCrmLib.ReplaceSaveButtonClickMethod("Button_QuickSendQuote", "QuickSendOverride");
@@ -20,16 +22,17 @@ $(document).ready(function () {
     increaseCrmLib.ReplaceSaveButtonClickMethod("Button_MergeToPDF", "QuickMergeOverride");
     increaseCrmLib.ReplaceSaveButtonClickMethod("Button_QuickPrintQuote", "QuickPrintOverride");
     increaseDialogBoxHelper.addSelectHook("RightButtonPanel");
+    increaseDialogBoxHelper.addConfirmHook("RightButtonPanel");
 });
 
 function loadCustomCss(href) {
     var cssLink = $("<link rel='stylesheet' type='text/css' href='" + href + "'>");
-	$("head").append(cssLink);		
+    $("head").append(cssLink);
 }
 
 function DoMergeOverride(afterOKFunc, doFullUpdate) {
 
-    var updateFlag = doFullUpdate? "Y" : "N";
+    var updateFlag = doFullUpdate ? "Y" : "N";
     var quoteID = crm.getArg("Key86");
     if (!quoteID) {
         quoteID = crm.getArg("Quot_OrderQuoteID");
@@ -41,36 +44,48 @@ function DoMergeOverride(afterOKFunc, doFullUpdate) {
         var getOppoLinkURL = increaseCrmLib.MakeRequestString("GetOppoLinkDataForQuote", "quoteID=" + quoteID);
         var resultHTML = increaseCrmLib.MakeSimpleAjaxRequest(getOppoLinkURL);
 
-        //somehow display this to the user so they pick one...
-        increaseDialogBoxHelper.fnOpenSelectDialog(resultHTML, "Select a Company",
-            function () {
+        if (resultHTML.length > 0) {
+            //somehow display this to the user so they pick one...
+            increaseDialogBoxHelper.fnOpenSelectDialog(resultHTML, "Select a Company",
+                function () {
 
-                //determine which OppoLinkID they picked:
-                var oppoLinkID = $("#select_hook_select").val();
-                if (oppoLinkID) {
+                    //determine which OppoLinkID they picked:
+                    var oppoLinkID = $("#select_hook_select").val();
+                    if (oppoLinkID) {
 
-                    //fire this off to set quot_mergeoppolinkid in the selected quote:
-                    var urlObj = {};
-                    urlObj.Target = "SetMergeOppoLinkInQuote.asp"
-                    urlObj.Params = [{ 'arg': 'QuoteID', 'val': quoteID }, { 'arg': 'OppoLinkID', 'val': oppoLinkID }, { 'arg': 'FullUpdate', 'val' : updateFlag}];
-                    var url = increaseCrmLib.MakeAjaxUrl(urlObj);
-                    var returnValue = increaseCrmLib.MakeSimpleAjaxRequest(url)
-                    if (returnValue === "TRUE") {
-                        afterOKFunc();
-                    } else if (returnValue.startsWith("Key2")) {
-                         afterOKFunc(returnValue);
-                    
+                        //fire this off to set quot_mergeoppolinkid in the selected quote:
+                        var urlObj = {};
+                        urlObj.Target = "SetMergeOppoLinkInQuote.asp"
+                        urlObj.Params = [{ 'arg': 'QuoteID', 'val': quoteID }, { 'arg': 'OppoLinkID', 'val': oppoLinkID }, { 'arg': 'FullUpdate', 'val': updateFlag }];
+                        var url = increaseCrmLib.MakeAjaxUrl(urlObj);
+                        var returnValue = increaseCrmLib.MakeSimpleAjaxRequest(url)
+                        if (returnValue === "TRUE") {
+                            afterOKFunc();
+                        } else if (returnValue.startsWith("Key2")) {
+                            afterOKFunc(returnValue);
+
+                        } else {
+                            SageCRM.utilities.removeOverlay();
+                        }
                     } else {
                         SageCRM.utilities.removeOverlay();
                     }
-                } else {
+                },
+                function () {
                     SageCRM.utilities.removeOverlay();
-                }
-            },
-            function () {
-                SageCRM.utilities.removeOverlay();
-            });
+                });
+        } else {
+            increaseDialogBoxHelper.fnOpenErrorDialog(noLinkedCompaniesText(), "No Linked Companies", 210, 400, function(){ SageCRM.utilities.removeOverlay(); });
+        }
     }
+}
+
+function noLinkedCompaniesText() {
+    var str = "This Quote/Opportunity is not linked to any Companies";
+    str += "<br/><br/>";
+    str += "You must add an Opportunity Link before the Quote can be printed or emailed.";
+    return str;
+
 }
 
 function QuickPrintOverride(orig) {
@@ -86,8 +101,11 @@ function QuickPrintOverride(orig) {
 function QuickSendOverride(orig) {
     try {
         DoMergeOverride(function (extraKey) {
-            document.location.href = orig + "&" + extraKey;
+            //document.location.href = orig + "&" + extraKey;
+            _newOrig = orig + "&" + extraKey;
+            window.open(_newOrig, "_blank");
         }, true);
+        SageCRM.utilities.removeOverlay();
     } catch (e) {
         SageCRM.utilities.removeOverlay();
     }

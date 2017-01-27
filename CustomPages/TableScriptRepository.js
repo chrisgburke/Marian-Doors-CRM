@@ -30,6 +30,18 @@ function writeToFile(message) {
     }
 }
 
+function HasValue(inputVal) {
+	if(inputVal){
+		var s = "" + inputVal + "";
+		if(s == "null") return false;
+		if(s == "undefined") return false;
+		if(s.length === 0) return false;
+		return true;
+	}else{
+		return false;
+	}
+}
+
 //*************************
 // Entity : QuoteItems 
 // Script : TaxCalculation 
@@ -216,4 +228,65 @@ function CleanForeignIds(whereClause){
 // Opportunity_CleanForeignIDs_DeleteRecord();
 // }
 
+//*************************
+// Entity : Comm_Link 
+// Script : Test 
+//*************************
+function Comm_Link_Test_InsertRecord(){
+   try {
+
+   } catch (error) {
+       writeToFile("ERROR: " + error.message);
+   }
+}
+
+function Comm_Link_Test_PostInsertRecord(){
+   try {
+       writeToFile(WhereClause);
+       var commLinkRecord = CRM.FindRecord("Comm_Link", WhereClause);
+       writeToFile(commLinkRecord.cmli_comm_communicationid);
+       if(HasValue(commLink.cmli_comm_communicationid)){
+           var communicationRecord = CRM.FindRecord("Communication", "comm_communicationid=" + commLink.cmli_comm_communicationid);
+           if(communicationRecord.RecordCount > 0){
+               var oppoID = communicationRecord.comm_opportunityid;
+               
+           }
+       }
+   } catch (error) {
+       writeToFile("ERROR: " + error.message);
+   }
+}
+
+function Comm_Link_Test_UpdateRecord(){
+   try {
+
+   } catch (error) {
+       writeToFile("ERROR: " + error.message);
+   }
+}
+
+function Comm_Link_Test_DeleteRecord(){
+   try {
+
+   } catch (error) {
+       writeToFile("ERROR: " + error.message);
+   }
+}
+
+// *** COPY THIS INTO CRM METADATA ***
+// function InsertRecord() {
+// Comm_Link_Test_InsertRecord();
+// }
+
+// function PostInsertRecord(){
+// Comm_Link_Test_PostInsertRecord();
+// }
+
+// function UpdateRecord() {
+// Comm_Link_Test_UpdateRecord();
+// }
+
+// function DeleteRecord(){
+// Comm_Link_Test_DeleteRecord();
+// }
 

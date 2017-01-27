@@ -82,7 +82,7 @@ increaseDialogBoxHelper = {
 		return deferred.promise();
 	},
 	
-	fnOpenErrorDialog : function(messageToShow, title, h, w) {
+	fnOpenErrorDialog : function(messageToShow, title, h, w, extraFunction) {
 		var height = 150;
 		var width = 400;
 		if(h)height = h;
@@ -96,7 +96,10 @@ increaseDialogBoxHelper = {
 			width: width,
 			buttons: {
 				"OK": function () {
-					$(this).dialog('close');              
+					$(this).dialog('close');
+					if(typeof(extraFunction) == "function"){
+						extraFunction();
+					}              
 				}
 			}
 		});
