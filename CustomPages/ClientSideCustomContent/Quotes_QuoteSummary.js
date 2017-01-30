@@ -43,7 +43,7 @@ function DoMergeOverride(afterOKFunc, doFullUpdate) {
         //this is just dummy data right now...
         var getOppoLinkURL = increaseCrmLib.MakeRequestString("GetOppoLinkDataForQuote", "quoteID=" + quoteID);
         var resultHTML = increaseCrmLib.MakeSimpleAjaxRequest(getOppoLinkURL);
-
+        
         if (resultHTML.length > 0) {
             //somehow display this to the user so they pick one...
             increaseDialogBoxHelper.fnOpenSelectDialog(resultHTML, "Select a Company",
