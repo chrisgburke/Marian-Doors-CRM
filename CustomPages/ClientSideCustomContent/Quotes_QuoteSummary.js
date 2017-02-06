@@ -102,7 +102,15 @@ function QuickSendOverride(orig) {
     try {
         DoMergeOverride(function (extraKey) {
             //document.location.href = orig + "&" + extraKey;
+
+            //see if our 'orig' contains a Key2:
+            if(orig.indexOf("Key2=") != -1){
+                var extraKeyValue = extraKey.split('=')[1];
+                _newOrig = orig.replace(/(Key2=)[^\&]+/, '$1' + extraKeyValue);
+            }else {
             _newOrig = orig + "&" + extraKey;
+
+            }
             window.open(_newOrig, "_blank");
         }, true);
         SageCRM.utilities.removeOverlay();
