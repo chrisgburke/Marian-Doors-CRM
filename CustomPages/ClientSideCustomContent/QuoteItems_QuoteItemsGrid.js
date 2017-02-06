@@ -12,7 +12,7 @@ $(document).ready(function(){
           var quitDescriptionText = this.getCellText(rowIndex, quitDescriptionColumnIndex).trim();
           var cellHtml = this.getCellHtml(rowIndex, productNameColumnIndex).trim();
           
-          if(cellHtml.length > 0){
+          if(cellHtml.length > 0 && cellHtml.substr(0, 2) == "<a"){
               var partA = cellHtml.split('>')[0];
               var partB = ">" + quitDescriptionText + "</a>";
               var newHtml = partA + partB;
