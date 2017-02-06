@@ -16,11 +16,7 @@ $(document).ready(function(){
               var partA = cellHtml.split('>')[0];
               var partB = ">" + quitDescriptionText + "</a>";
               var newHtml = partA + partB;
-              this.setCellHtml(rowIndex, quitDescriptionColumnIndex, newHtml);
-        //       var cellHtml = this.getCellHtml(rowIndex, fileNameColumnIndex).trim();
-        //       var libraryid = extractLibraryId(cellHtml);
-        //       var directory = getDocumentDirectory(libraryid);
-        //       crm.grids(0).setCellHtml(rowIndex, copyColumnIndex, "<a class='WEBLINK' target='EWAREVISITS' data-clipboard-text='" + PutOnClipboard(baseFilePath, directory, celltext) +"' href='javascript:CopyToClipboard()'>Copy</a>");
+              this.setCellHtml(rowIndex, quitDescriptionColumnIndex, newHtml);        
            }
         }
     });
