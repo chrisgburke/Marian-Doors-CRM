@@ -30,5 +30,7 @@ $(document).ready(function () {
 
     //THEN hide the prod_name column
     crm.grids(0).hideColumn("quit_description");
+    
+    $("td[colname='prod_name'] a").text("Description");
     //*/  
 });
