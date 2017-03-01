@@ -17,6 +17,13 @@ $(document).ready(function () {
 
     // }
 
+    if (!String.prototype.startsWith) {
+        String.prototype.startsWith = function (searchString, position) {
+            position = position || 0;
+            return this.substr(position, searchString.length) === searchString;
+        };
+    }
+
     increaseCrmLib.ReplaceSaveButtonClickMethod("Button_QuickSendQuote", "QuickSendOverride");
     increaseCrmLib.ReplaceSaveButtonClickMethod("Button_MergeToWord", "QuickMergeOverride");
     increaseCrmLib.ReplaceSaveButtonClickMethod("Button_MergeToPDF", "QuickMergeOverride");
@@ -43,7 +50,7 @@ function DoMergeOverride(afterOKFunc, doFullUpdate) {
         //this is just dummy data right now...
         var getOppoLinkURL = increaseCrmLib.MakeRequestString("GetOppoLinkDataForQuote", "quoteID=" + quoteID);
         var resultHTML = increaseCrmLib.MakeSimpleAjaxRequest(getOppoLinkURL);
-        
+
         if (resultHTML.length > 0) {
             //somehow display this to the user so they pick one...
             increaseDialogBoxHelper.fnOpenSelectDialog(resultHTML, "Select a Company",
@@ -75,7 +82,7 @@ function DoMergeOverride(afterOKFunc, doFullUpdate) {
                     SageCRM.utilities.removeOverlay();
                 });
         } else {
-            increaseDialogBoxHelper.fnOpenErrorDialog(noLinkedCompaniesText(), "No Linked Companies", 210, 400, function(){ SageCRM.utilities.removeOverlay(); });
+            increaseDialogBoxHelper.fnOpenErrorDialog(noLinkedCompaniesText(), "No Linked Companies", 210, 400, function () { SageCRM.utilities.removeOverlay(); });
         }
     }
 }
@@ -104,11 +111,11 @@ function QuickSendOverride(orig) {
             //document.location.href = orig + "&" + extraKey;
 
             //see if our 'orig' contains a Key2:
-            if(orig.indexOf("Key2=") != -1){
+            if (orig.indexOf("Key2=") != -1) {
                 var extraKeyValue = extraKey.split('=')[1];
                 _newOrig = orig.replace(/(Key2=)[^\&]+/, '$1' + extraKeyValue);
-            }else {
-            _newOrig = orig + "&" + extraKey;
+            } else {
+                _newOrig = orig + "&" + extraKey;
 
             }
             window.open(_newOrig, "_blank");
