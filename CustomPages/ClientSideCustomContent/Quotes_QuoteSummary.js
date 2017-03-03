@@ -1,5 +1,6 @@
 $(document).ready(function () {
 
+    var ie = false;
     // var server = crm.installUrl().split('/')[3];
     // var currentHref = document.location.href;
     // if (currentHref.indexOf("Act=520") == -1 && currentHref.indexOf("Act=1469") != -1) {
@@ -16,6 +17,12 @@ $(document).ready(function () {
     // if(act != "520"){
 
     // }
+    if ( (navigator.userAgent.search("Chrome") >= 0) || (navigator.userAgent.search("Safari") >= 0)) {
+        ie = false;
+    }else{
+        ie = true;
+    }
+
 
     if (!String.prototype.startsWith) {
         String.prototype.startsWith = function (searchString, position) {
@@ -30,6 +37,11 @@ $(document).ready(function () {
     increaseCrmLib.ReplaceSaveButtonClickMethod("Button_QuickPrintQuote", "QuickPrintOverride");
     increaseDialogBoxHelper.addSelectHook("RightButtonPanel");
     increaseDialogBoxHelper.addConfirmHook("RightButtonPanel");
+
+    if(ie){
+        $("#Button_QuickPrintQuote").attr("onclick", "");
+    }
+
 });
 
 function loadCustomCss(href) {
