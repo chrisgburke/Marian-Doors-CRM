@@ -1,7 +1,9 @@
 $(document).ready(function(){
+    alert('ok');
     var _act = crm.getArg("Act");
     if(_act != ""){
-        $("#EntryForm table:first tr:lt(6)").hide();
+        $("#EntryForm table:first tr:lt(6)").hide();   
+
     }
 
     if(_act === "1190"){

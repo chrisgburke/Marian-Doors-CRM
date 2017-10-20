@@ -49,6 +49,7 @@ js/analytics/
 js/app/
 js/crm/
 js/calendar
+node_modules/
 
 #################
 js/crmJSAPI/
